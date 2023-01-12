@@ -1,0 +1,29 @@
+name: Release To Docker
+on:
+  push:
+
+env:
+  REGISTRY: docker.io
+  NAMESPACE: skiinder
+  IMAGE: code-server
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Detect Date
+        run: echo "VERSION=$(date +%F)" >>$GITHUB_ENV
+      - name: Build Image
+        run: |
+          TAG=${VERSION}
+          docker login \
+            --username="${{ secrets.DOCKER_USERNAME }}" \
+            --password="${{ secrets.DOCKER_PASSWORD }}" \
+            ${REGISTRY}
+          docker build . --file Dockerfile \
+            --tag ${REGISTRY}/${NAMESPACE}/${IMAGE}:${TAG} \
+            --tag ${REGISTRY}/${NAMESPACE}/${IMAGE}:latest
+          docker push ${REGISTRY}/${NAMESPACE}/${IMAGE}:${TAG}
+          docker push ${REGISTRY}/${NAMESPACE}/${IMAGE}:latest
