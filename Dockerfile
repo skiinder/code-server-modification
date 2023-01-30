@@ -1,4 +1,9 @@
-FROM codercom/code-server
+FROM maven:3.8.7-eclipse-temurin-8-alpine as m2
+USER root
+COPY pom.xml .
+RUN mvn package
+
+FROM codercom/code-server:4.9.1
 
 # 安装常用环境
 RUN set -ex && \
@@ -20,11 +25,7 @@ ENV JAVA_HOME=/opt/java M2_HOME=/opt/maven
 ENV PATH=$PATH:$JAVA_HOME/bin:$M2_HOME/bin
 
 # 获取Maven缓存
-RUN git clone https://gitee.com/skiinder/mapreduce-practice-01.git && \
-    cd mapreduce-practice-01 && \
-    mvn clean package && \
-    cd .. && \
-    rm -rf mapreduce-practice-01
+COPY --from=m2 /root/.m2 ./.m2
 
 # 配置code-server和workspace
 RUN code-server --install-extension vscjava.vscode-java-pack && \
@@ -34,7 +35,7 @@ RUN code-server --install-extension vscjava.vscode-java-pack && \
     mkdir -p /home/coder/.config/code-server && \
     sudo mkdir -p /entrypoint.d
 
-# 拷贝配置和自定义脚本、
+# 拷贝配置和自定义脚本
 COPY before.sh /entrypoint.d
 COPY config.yaml /home/coder/.config/code-server
 RUN sudo chmod +x /entrypoint.d/before.sh
