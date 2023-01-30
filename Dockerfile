@@ -16,9 +16,9 @@ RUN set -ex && \
     sudo rm -rf /var/cache/apt/*
 
 # 安装Java和Maven
-RUN curl -L https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u352-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u352b08.tar.gz | sudo tar -zxC /opt && \
+RUN curl -L https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u352-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u352b08.tar.gz | sudo tar -zxC /opt --no-same-owner && \
     sudo mv /opt/jdk8u352-b08 /opt/java && \
-    curl -L https://dlcdn.apache.org/maven/maven-3/3.8.7/binaries/apache-maven-3.8.7-bin.tar.gz | sudo tar -zxC /opt && \
+    curl -L https://dlcdn.apache.org/maven/maven-3/3.8.7/binaries/apache-maven-3.8.7-bin.tar.gz | sudo tar -zxC /opt --no-same-owner && \
     sudo mv /opt/apache-maven-3.8.7 /opt/maven
 
 ENV JAVA_HOME=/opt/java M2_HOME=/opt/maven
