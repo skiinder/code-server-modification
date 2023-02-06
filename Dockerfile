@@ -31,12 +31,15 @@ COPY --from=m2 /root/.m2 ./.m2
 RUN code-server --install-extension vscjava.vscode-java-pack && \
     code-server --install-extension sugatoray.vscode-git-extension-pack && \
     mkdir -p /home/coder/.local/share/code-server/User && \
-    echo '{"java.home":"/opt/java","maven.terminal.useJavaHome":true,"maven.executable.path":"/opt/maven/bin/mvn","java.server.launchMode":"Standard"}' | jq . > /home/coder/.local/share/code-server/User/settings.json && \
+    mkdir -p /home/coder/workspace && \
     mkdir -p /home/coder/.config/code-server && \
     sudo mkdir -p /entrypoint.d
 
+WORKDIR /home/coder/workspace
+
 # 拷贝配置和自定义脚本
-COPY before.sh /entrypoint.d
+COPY settings.json /home/coder/.local/share/code-server/User
 COPY config.yaml /home/coder/.config/code-server
+COPY before.sh /entrypoint.d
 RUN sudo chmod +x /entrypoint.d/before.sh
 
