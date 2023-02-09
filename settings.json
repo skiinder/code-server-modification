@@ -1,6 +1,0 @@
-{
-  "java.home": "/opt/java",
-  "maven.terminal.useJavaHome": true,
-  "maven.executable.path": "/opt/maven/bin/mvn",
-  "java.server.launchMode": "Standard"
-}
