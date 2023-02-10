@@ -14,10 +14,10 @@ vscode.window.COUNTDOWN_INTERVAL = vscode.workspace.getConfiguration().get("oj-c
 vscode.window.COUNTDOWN_THRESHOLD = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.threshold");
 
 //检查挂机行为周期，单位秒
-vscode.window.CHECK_IDEL_INTERVAL = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.check.idel.interval");
+vscode.window.CHECK_IDEL_INTERVAL = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.check.idle.interval");
 
 //挂机时间阈值
-vscode.window.IDEL_THRESHOLD = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.idel.threshold");
+vscode.window.IDEL_THRESHOLD = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.idle.threshold");
 
 //当前是否挂机
 vscode.window.IS_IDEL = false;
@@ -67,12 +67,12 @@ function renewPod() {
 function checkIdel() {
     console.log("定时检查挂机行为:" + new Date());
     //计算挂机时长
-    let idelTime = parseInt(new Date().getTime() / 1000) - vscode.window.lastChangeTime;
+    let idleTime = parseInt(new Date().getTime() / 1000) - vscode.window.lastChangeTime;
     
     //若挂机时长超过阈值，并且之前并未处在挂机状态，也就是刚刚监测到挂机行为
-    if (idelTime >= vscode.window.IDEL_THRESHOLD && !vscode.window.IS_IDEL) {
+    if (idleTime >= vscode.window.IDEL_THRESHOLD && !vscode.window.IS_IDEL) {
 
-        console.log("监测到挂机超过:" + idelTime + "秒,开始倒计时")
+        console.log("监测到挂机超过:" + idleTime + "秒,开始倒计时")
         //第一次监测到挂机行为,开始倒计时,并且将IS_IDEL设置为挂机状态,并且不再触发下一次的挂机监测
         vscode.window.IS_IDEL = true;
         countdown();
