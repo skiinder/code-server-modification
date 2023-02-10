@@ -40,5 +40,10 @@
             <artifactId>flink-clients</artifactId>
             <version>1.16.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.12</artifactId>
+            <version>3.3.1</version>
+        </dependency>
     </dependencies>
 </project>
