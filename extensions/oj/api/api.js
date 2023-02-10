@@ -34,7 +34,7 @@ request.interceptors.request.use(config => {
     return config // 必须返回config
 })
 
-export function renewPodApi() {
+function renewPodApi() {
     return request({
         url: "/codeserver/renew",
         method:"get",
@@ -45,9 +45,15 @@ export function renewPodApi() {
 }
 
 
-export function deletePodApi() {
+function deletePodApi() {
     return request({
         url: "/codeserver/delete",
         method:"get",
     });
+}
+
+
+module.exports = {
+	renewPodApi,
+	deletePodApi
 }

@@ -14,13 +14,13 @@ vscode.window.COUNTDOWN_INTERVAL = vscode.workspace.getConfiguration().get("oj-c
 vscode.window.COUNTDOWN_THRESHOLD = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.threshold");
 
 //检查挂机行为周期，单位秒
-vscode.window.CHECK_IDEL_INTERVAL = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.check.idle.interval");
+vscode.window.CHECK_IDLE_INTERVAL = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.check.idle.interval");
 
 //挂机时间阈值
-vscode.window.IDEL_THRESHOLD = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.idle.threshold");
+vscode.window.IDLE_THRESHOLD = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.idle.threshold");
 
 //当前是否挂机
-vscode.window.IS_IDEL = false;
+vscode.window.IS_IDLE = false;
 
 //是否续约Pod
 vscode.window.shouldRenewPod = true;
@@ -37,10 +37,10 @@ vscode.window.lastChangeTime = parseInt(new Date().getTime() / 1000);
 function updateLastChangeTime() {
     vscode.window.lastChangeTime = parseInt(new Date().getTime() / 1000);
 
-    //若Pod处在存活状态,并且当前是挂机状态,则设置IS_IDEL为活跃状态
-    if (vscode.window.shouldRenewPod && vscode.window.IS_IDEL) {
+    //若Pod处在存活状态,并且当前是挂机状态,则设置IS_IDLE为活跃状态
+    if (vscode.window.shouldRenewPod && vscode.window.IS_IDLE) {
         vscode.window.showInformationMessage("系统监测到你正在coding,后台资源将继续为你保留");
-        vscode.window.IS_IDEL = false;
+        vscode.window.IS_IDLE = false;
         vscode.window.podLeftSec = vscode.window.COUNTDOWN_THRESHOLD;
         checkIdel();
         console.log("重新开始定时检查挂机行为：" + new Date());
@@ -70,17 +70,17 @@ function checkIdel() {
     let idleTime = parseInt(new Date().getTime() / 1000) - vscode.window.lastChangeTime;
     
     //若挂机时长超过阈值，并且之前并未处在挂机状态，也就是刚刚监测到挂机行为
-    if (idleTime >= vscode.window.IDEL_THRESHOLD && !vscode.window.IS_IDEL) {
+    if (idleTime >= vscode.window.IDLE_THRESHOLD && !vscode.window.IS_IDLE) {
 
         console.log("监测到挂机超过:" + idleTime + "秒,开始倒计时")
-        //第一次监测到挂机行为,开始倒计时,并且将IS_IDEL设置为挂机状态,并且不再触发下一次的挂机监测
-        vscode.window.IS_IDEL = true;
+        //第一次监测到挂机行为,开始倒计时,并且将IS_IDLE设置为挂机状态,并且不再触发下一次的挂机监测
+        vscode.window.IS_IDLE = true;
         countdown();
     } else {
         //未监测到挂机行为,触发下一次的挂机监测
         setTimeout(() => {
             checkIdel();
-        }, vscode.window.CHECK_IDEL_INTERVAL * 1000);
+        }, vscode.window.CHECK_IDLE_INTERVAL * 1000);
     }
 }
 
@@ -88,7 +88,7 @@ function checkIdel() {
 function countdown() {
 
     //如果当前状态是挂机状态,并且倒计时时间还有剩余
-    if (vscode.window.IS_IDEL && vscode.window.podLeftSec > 0) {
+    if (vscode.window.IS_IDLE && vscode.window.podLeftSec > 0) {
         //显示提示信息
         console.log("监测到挂机行为:" + new Date());
         vscode.window.showInformationMessage("系统监测到你正在挂机,后台资源将在" + vscode.window.podLeftSec + "秒后释放");
@@ -98,7 +98,7 @@ function countdown() {
             countdown();
         }, vscode.window.COUNTDOWN_INTERVAL * 1000);
     //若当前状态是挂机状态,并且倒计时已经用完
-    } else if (vscode.window.IS_IDEL && vscode.window.podLeftSec <= 0) {
+    } else if (vscode.window.IS_IDLE && vscode.window.podLeftSec <= 0) {
         //释放资源,并且不再触发下次的countdown
         console.log("挂机行为超过阈值,释放资源");
         vscode.window.showInformationMessage("后台资源已释放");
