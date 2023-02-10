@@ -12,9 +12,9 @@ cat <<EOF >/home/coder/.local/share/code-server/User/settings.json
   "maven.terminal.useJavaHome": true,
   "maven.executable.path": "/opt/maven/bin/mvn",
   "java.server.launchMode": "Standard",
-  "project.token": "${PROJECT_TOKEN}",
-  "project.id": ${PROJECT_ID},
-  "project.url": "${PROJECT_URL}"
+  "oj-config.project.token": "${PROJECT_TOKEN}",
+  "oj-config.project.id": ${PROJECT_ID},
+  "oj-config.project.url": "${PROJECT_URL}"
 }
 EOF
 

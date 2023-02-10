@@ -26,10 +26,12 @@ ENV PATH=$PATH:$JAVA_HOME/bin:$M2_HOME/bin
 
 # 获取Maven缓存
 COPY --from=m2 /root/.m2 ./.m2
+COPY oj-0.0.1.vsix ./
 
 # 配置code-server和workspace
 RUN code-server --install-extension vscjava.vscode-java-pack && \
     code-server --install-extension sugatoray.vscode-git-extension-pack && \
+    code-server --install-extension oj-0.0.1.vsix && \
     mkdir -p /home/coder/.local/share/code-server/User && \
     mkdir -p /home/coder/workspace && \
     mkdir -p /home/coder/.config/code-server && \

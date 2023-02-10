@@ -1,6 +1,7 @@
 name: Release To Docker
 on:
   push:
+    branches: [ master ]
 
 env:
   REGISTRY: docker.io
@@ -13,6 +14,16 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+      - name: Set Up Node
+        uses: actions/setup-node@v3
+      - name: Build Extension
+        run: |
+          set -ex
+          cd extensions/oj
+          npm install
+          npm install -g @vscode/vsce
+          vsce package --allow-missing-repository
+          cp oj-0.0.1.vsix ../../docker
       - name: Detect Date
         run: echo "VERSION=$(date +%F)" >>$GITHUB_ENV
       - name: Build Image
