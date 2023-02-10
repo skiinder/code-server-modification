@@ -35,7 +35,7 @@
             "scope": "workspace"
           },
           "oj-config.project.id": {
-            "type": "string",
+            "type": "number",
             "description": "题目id",
             "scope": "workspace"
           },
@@ -57,13 +57,13 @@
             "description": "倒计时提示周期(秒)",
             "scope": "workspace"
           },
-          "oj-config.oj.countdown.check.idel.interval": {
+          "oj-config.oj.countdown.check.idle.interval": {
             "type": "number",
             "default": 2,
             "description": "检查挂机行为周期(秒)",
             "scope": "workspace"
           },
-          "oj-config.oj.countdown.idel.threshold": {
+          "oj-config.oj.countdown.idle.threshold": {
             "type": "number",
             "default": 60,
             "description": "挂机认定阈值",
