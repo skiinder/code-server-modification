@@ -14,12 +14,37 @@ cat <<EOF >/home/coder/.local/share/code-server/User/settings.json
   "java.server.launchMode": "Standard",
   "oj-config.project.token": "${PROJECT_TOKEN}",
   "oj-config.project.id": ${PROJECT_ID},
-  "oj-config.project.url": "${PROJECT_URL}",
-  "oj-config.oj.countdown.idel.threshold": 4
+  "oj-config.project.url": "${PROJECT_URL}"
 }
 EOF
 
 # 拉取代码
-if [ "${PROJECT_URL}" ] && [ ! -d "$(basename "${PROJECT_URL}" .git)" ]; then
+PROJECT_DIR="$(basename "${PROJECT_URL}" .git)"
+if [ "${PROJECT_URL}" ] && [ ! -d "${PROJECT_DIR}" ]; then
   git clone "${PROJECT_URL}"
 fi
+
+# 配置运行设置
+mkdir .vscode
+cat <<EOF >.vscode/launch.json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "\${file}",
+            "vmArgs": "-Xmx512m"
+        },
+        {
+            "type": "java",
+            "name": "Launch Runner",
+            "request": "launch",
+            "mainClass": "com.atguigu.Runner",
+            "projectName": "${PROJECT_DIR}",
+            "vmArgs": "-Xmx512m"
+        }
+    ]
+}
+EOF
