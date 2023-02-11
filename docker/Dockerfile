@@ -1,7 +1,11 @@
 FROM maven:3.8.7-eclipse-temurin-8-alpine as m2
 USER root
-COPY pom.xml .
-RUN mvn package
+COPY mapreduce.xml pom.xml
+RUN mvn clean package
+COPY spark.xml pom.xml
+RUN mvn clean package
+COPY flink.xml pom.xml
+RUN mvn clean package
 
 FROM codercom/code-server:4.9.1
 
@@ -19,7 +23,8 @@ RUN set -ex && \
 RUN curl -L https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u352-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u352b08.tar.gz | sudo tar -zxC /opt --no-same-owner && \
     sudo mv /opt/jdk8u352-b08 /opt/java && \
     curl -L https://dlcdn.apache.org/maven/maven-3/3.8.7/binaries/apache-maven-3.8.7-bin.tar.gz | sudo tar -zxC /opt --no-same-owner && \
-    sudo mv /opt/apache-maven-3.8.7 /opt/maven
+    sudo mv /opt/apache-maven-3.8.7 /opt/maven && \
+    sudo sed -i '/<mirrors>/a<mirror><id>nexus-aliyun</id><mirrorOf>central</mirrorOf><name>Nexus aliyun</name><url>http://maven.aliyun.com/nexus/content/groups/public</url></mirror>' /opt/maven/conf/settings.xml
 
 ENV JAVA_HOME=/opt/java M2_HOME=/opt/maven
 ENV PATH=$PATH:$JAVA_HOME/bin:$M2_HOME/bin
