@@ -39,14 +39,14 @@ function updateLastChangeTime() {
 
     //若Pod处在存活状态,并且当前是挂机状态,则设置IS_IDLE为活跃状态
     if (vscode.window.shouldRenewPod && vscode.window.IS_IDLE) {
-        vscode.window.showInformationMessage("系统监测到你正在coding,后台资源将继续为你保留");
+        vscode.window.showInformationMessage("监测到coding, 后台资源将继续为你保留");
         vscode.window.IS_IDLE = false;
         vscode.window.podLeftSec = vscode.window.COUNTDOWN_THRESHOLD;
         checkIdel();
         console.log("重新开始定时检查挂机行为：" + new Date());
     //若Pod已经释放,提示即可
     } else if (!vscode.window.shouldRenewPod) {
-        vscode.window.showInformationMessage("后台资源已经释放,如需继续做题请重新打开WebIDE");
+        vscode.window.showInformationMessage("后台资源已经释放, 如需继续做题请刷新网页");
     }
 }
 
@@ -57,8 +57,6 @@ function renewPod() {
         setTimeout(() => {
             renewPod();
         }, vscode.window.RENEW_POD_INTERVAL * 1000);
-    } else {
-        return;
     }
 }
 
@@ -91,7 +89,7 @@ function countdown() {
     if (vscode.window.IS_IDLE && vscode.window.podLeftSec > 0) {
         //显示提示信息
         console.log("监测到挂机行为:" + new Date());
-        vscode.window.showInformationMessage("系统监测到你正在挂机,后台资源将在" + vscode.window.podLeftSec + "秒后释放");
+        vscode.window.showInformationMessage("你已经有一段时间没有敲代码了, 如果你继续挂机, 后台资源将在" + vscode.window.podLeftSec + "秒后释放");
         vscode.window.podLeftSec = vscode.window.podLeftSec - vscode.window.COUNTDOWN_INTERVAL;
         //并触发下一次倒计时
         setTimeout(() => { 
