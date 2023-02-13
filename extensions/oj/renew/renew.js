@@ -5,19 +5,19 @@ const { renewPodApi, deletePodApi } = require('../api/api');
 
 
 //续约Pod周期，单位秒
-vscode.window.RENEW_POD_INTERVAL = vscode.workspace.getConfiguration().get("oj-config.oj.renew.pod.interval");
+vscode.window.RENEW_POD_INTERVAL = 60;
 
 //倒计时周期，单位秒
-vscode.window.COUNTDOWN_INTERVAL = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.interval");
+vscode.window.COUNTDOWN_INTERVAL = 60;
 
 //倒计时阈值
-vscode.window.COUNTDOWN_THRESHOLD = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.threshold");
+vscode.window.COUNTDOWN_THRESHOLD = 180;
 
 //检查挂机行为周期，单位秒
-vscode.window.CHECK_IDLE_INTERVAL = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.check.idle.interval");
+vscode.window.CHECK_IDLE_INTERVAL = 2;
 
 //挂机时间阈值
-vscode.window.IDLE_THRESHOLD = vscode.workspace.getConfiguration().get("oj-config.oj.countdown.idle.threshold");
+vscode.window.IDLE_THRESHOLD = 60;
 
 //当前是否挂机
 vscode.window.IS_IDLE = false;

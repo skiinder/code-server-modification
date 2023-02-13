@@ -38,36 +38,6 @@
             "type": "number",
             "description": "题目id",
             "scope": "workspace"
-          },
-          "oj-config.oj.renew.pod.interval": {
-            "type": "number",
-            "default": 180,
-            "description": "pod续约周期(秒)",
-            "scope": "workspace"
-          },
-          "oj-config.oj.countdown.interval": {
-            "type": "number",
-            "default": 60,
-            "description": "倒计时提示周期(秒)",
-            "scope": "workspace"
-          },
-          "oj-config.oj.countdown.threshold": {
-            "type": "number",
-            "default": 180,
-            "description": "倒计时提示周期(秒)",
-            "scope": "workspace"
-          },
-          "oj-config.oj.countdown.check.idle.interval": {
-            "type": "number",
-            "default": 2,
-            "description": "检查挂机行为周期(秒)",
-            "scope": "workspace"
-          },
-          "oj-config.oj.countdown.idle.threshold": {
-            "type": "number",
-            "default": 60,
-            "description": "挂机认定阈值",
-            "scope": "workspace"
           }
         }
       }
