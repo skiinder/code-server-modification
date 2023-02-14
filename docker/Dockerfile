@@ -42,8 +42,6 @@ RUN code-server --install-extension vscjava.vscode-java-pack && \
     mkdir -p /home/coder/.config/code-server && \
     sudo mkdir -p /entrypoint.d
 
-COPY README.txt /home/coder/workspace
-
 # 拷贝配置和自定义脚本
 COPY before.sh /entrypoint.d
 RUN sudo chmod +x /entrypoint.d/before.sh && \
