@@ -25,6 +25,7 @@ PROJECT_DIR="$(basename "${PROJECT_URL}" .git)"
 if [ "${PROJECT_URL}" ] && [ ! -d "${PROJECT_DIR}" ]; then
   git clone "${PROJECT_URL}"
 fi
+rm -rf "${PROJECT_DIR}/.git"
 
 # 配置运行设置
 mkdir .vscode

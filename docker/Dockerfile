@@ -35,12 +35,14 @@ COPY oj-0.0.1.vsix ./
 
 # 配置code-server和workspace
 RUN code-server --install-extension vscjava.vscode-java-pack && \
-    code-server --install-extension sugatoray.vscode-git-extension-pack && \
+#    code-server --install-extension sugatoray.vscode-git-extension-pack && \
     code-server --install-extension oj-0.0.1.vsix && \
     mkdir -p /home/coder/.local/share/code-server/User && \
     mkdir -p /home/coder/workspace && \
     mkdir -p /home/coder/.config/code-server && \
     sudo mkdir -p /entrypoint.d
+
+COPY README.txt /home/coder/workspace
 
 # 拷贝配置和自定义脚本
 COPY before.sh /entrypoint.d
