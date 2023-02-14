@@ -15,7 +15,7 @@ cat <<EOF >/home/coder/.local/share/code-server/User/settings.json
   "oj-config.project.token": "${PROJECT_TOKEN}",
   "oj-config.project.id": ${PROJECT_ID},
   "oj-config.project.url": "${PROJECT_URL}",
-  "security.workspace.trust.startupPrompt": "never",
+  "security.workspace.trust.enabled": false,
   "workbench.startupEditor": "readme"
 }
 EOF
