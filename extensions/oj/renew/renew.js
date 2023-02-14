@@ -17,7 +17,7 @@ vscode.window.COUNTDOWN_THRESHOLD = 180;
 vscode.window.CHECK_IDLE_INTERVAL = 2;
 
 //挂机时间阈值
-vscode.window.IDLE_THRESHOLD = 60;
+vscode.window.IDLE_THRESHOLD = 1620;
 
 //当前是否挂机
 vscode.window.IS_IDLE = false;
