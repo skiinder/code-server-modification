@@ -6,6 +6,7 @@ COPY spark.xml pom.xml
 RUN mvn clean package
 COPY flink.xml pom.xml
 RUN mvn clean package
+RUN chown -R 1000:1000 /root/.m2
 
 FROM codercom/code-server:4.9.1
 
@@ -20,7 +21,8 @@ RUN set -ex && \
     sudo rm -rf /var/cache/apt/*
 
 # 安装Java和Maven
-RUN curl -L https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u352-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u352b08.tar.gz | sudo tar -zxC /opt --no-same-owner && \
+RUN set -ex && \
+    curl -L https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u352-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u352b08.tar.gz | sudo tar -zxC /opt --no-same-owner && \
     sudo mv /opt/jdk8u352-b08 /opt/java && \
     curl -L https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz | sudo tar -zxC /opt --no-same-owner && \
     sudo mv /opt/apache-maven-3.6.3 /opt/maven && \
@@ -30,20 +32,19 @@ ENV JAVA_HOME=/opt/java M2_HOME=/opt/maven
 ENV PATH=$PATH:$JAVA_HOME/bin:$M2_HOME/bin
 
 # 获取Maven缓存
-COPY --from=m2 /root/.m2 ./.m2
-COPY oj-0.0.1.vsix ./
+COPY --from=m2 --chown=coder:coder /root/.m2 ./.m2
+COPY extensions ./extensions
 
 # 配置code-server和workspace
-RUN code-server --install-extension vscjava.vscode-java-pack && \
-    code-server --install-extension k--kato.intellij-idea-keybindings && \
-    code-server --install-extension oj-0.0.1.vsix && \
+RUN set -ex && \
+    find extensions -name *.vsix | xargs -rn1 code-server --install-extension && \
+    sudo rm -rf extensions && \
     mkdir -p /home/coder/.local/share/code-server/User && \
     mkdir -p /home/coder/workspace && \
     mkdir -p /home/coder/.config/code-server && \
-    sudo mkdir -p /entrypoint.d
+    sudo mkdir -p /entrypoint.d && \
+    RUN sudo sed -i '/coder/d' /etc/sudoers.d/nopasswd
 
 # 拷贝配置和自定义脚本
-COPY before.sh /entrypoint.d
-RUN sudo chmod +x /entrypoint.d/before.sh && \
-    sudo sed -i '/coder/d' /etc/sudoers.d/nopasswd
+COPY --chmod=755 --chown=coder:coder before.sh /entrypoint.d
 WORKDIR /home/coder/workspace
