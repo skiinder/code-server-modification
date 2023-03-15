@@ -8,7 +8,7 @@ COPY flink.xml pom.xml
 RUN mvn clean package
 RUN chown -R 1000:1000 /root/.m2
 
-FROM codercom/code-server:4.9.1
+FROM codercom/code-server:4.10.1
 
 # 安装常用环境
 RUN set -ex && \

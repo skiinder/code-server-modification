@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          lfs: true
       - name: Set Up Node
         uses: actions/setup-node@v3
       - name: Build Extension
