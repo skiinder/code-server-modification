@@ -43,7 +43,7 @@ RUN set -ex && \
     mkdir -p /home/coder/workspace && \
     mkdir -p /home/coder/.config/code-server && \
     sudo mkdir -p /entrypoint.d && \
-    RUN sudo sed -i '/coder/d' /etc/sudoers.d/nopasswd
+    sudo sed -i '/coder/d' /etc/sudoers.d/nopasswd
 
 # 拷贝配置和自定义脚本
 COPY --chmod=755 --chown=coder:coder before.sh /entrypoint.d
