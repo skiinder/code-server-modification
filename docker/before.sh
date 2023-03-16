@@ -9,7 +9,9 @@ EOF
 mkdir -p /home/coder/.local/share/code-server/User
 cat <<EOF >/home/coder/.local/share/code-server/User/settings.json
 {
-  "security.workspace.trust.enabled": false
+  "security.workspace.trust.enabled": false,
+    "maven.view": "hierarchical",
+    "java.dependency.packagePresentation": "hierarchical"
 }
 EOF
 
