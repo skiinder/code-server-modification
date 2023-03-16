@@ -5,14 +5,6 @@ auth: none
 cert: false
 EOF
 
-cat <<'EOF' >README.txt
-这是一个线上IDE，使用上需要注意以下几点：
-    1. 由于线上资源有限，IDE不允许挂机，如果检测到挂机时长超过30分钟，服务器资源会自动释放。挂机检测以是否敲击代码为准;
-    2. 退出该IDE后，你的代码会在后台保留4小时。如果你在4小时内重新打开同一题目，可以继续之前的工作。
-    3. IDE环境为vscode，不是IDEA，使用上稍有区别;
-    4. 项目要求请查看{workspace/项目具体文件夹/README.md}。
-EOF
-
 # vs-code配置
 cat <<EOF >/home/coder/.local/share/code-server/User/settings.json
 {
@@ -36,8 +28,8 @@ fi
 rm -rf "${PROJECT_DIR}/.git"
 
 # 配置运行设置
-mkdir .vscode
-cat <<EOF >.vscode/launch.json
+mkdir "${PROJECT_DIR}/.vscode"
+cat <<EOF >"${PROJECT_DIR}/.vscode/launch.json"
 {
     "version": "0.2.0",
     "configurations": [
@@ -58,4 +50,11 @@ cat <<EOF >.vscode/launch.json
         }
     ]
 }
+EOF
+rm -rf "${PROJECT_DIR}/README.md"
+cat <<'EOF' >"${PROJECT_DIR}/README.txt"
+这是一个线上IDE，使用上需要注意以下几点：
+    1. 由于线上资源有限，IDE不允许挂机，如果检测到挂机时长超过30分钟，服务器资源会自动释放。挂机检测以是否敲击代码为准;
+    2. 退出该IDE后，你的代码会在后台保留4小时。如果你在4小时内重新打开同一题目，可以继续之前的工作。
+    3. IDE环境为vscode，不是IDEA，使用上稍有区别。
 EOF
