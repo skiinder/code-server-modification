@@ -6,9 +6,17 @@ cert: false
 EOF
 
 # vs-code配置
+mkdir -p /home/coder/.local/share/code-server/User
 cat <<EOF >/home/coder/.local/share/code-server/User/settings.json
 {
-  "java.home": "/opt/java",
+  "security.workspace.trust.enabled": false
+}
+EOF
+
+mkdir -p /home/coder/.local/share/code-server/Machine
+cat <<EOF >/home/coder/.local/share/code-server/Machine/settings.json
+{
+  "java.jdt.ls.java.home": "/opt/java",
   "java.compile.nullAnalysis.mode": "automatic",
   "maven.terminal.useJavaHome": true,
   "maven.executable.path": "/opt/maven/bin/mvn",
@@ -16,7 +24,6 @@ cat <<EOF >/home/coder/.local/share/code-server/User/settings.json
   "oj-config.project.token": "${PROJECT_TOKEN}",
   "oj-config.project.id": ${PROJECT_ID},
   "oj-config.project.url": "${PROJECT_URL}",
-  "security.workspace.trust.enabled": false,
   "workbench.startupEditor": "readme"
 }
 EOF
@@ -52,7 +59,7 @@ cat <<EOF >"${PROJECT_DIR}/.vscode/launch.json"
     ]
 }
 EOF
-rm -rf "${PROJECT_DIR}/README.md"
+find "${PROJECT_DIR}" -iname readme.md -print0 | xargs -0 rm -rf
 cat <<'EOF' >"${PROJECT_DIR}/README.txt"
 这是一个线上IDE，使用上需要注意以下几点：
     1. 由于线上资源有限，IDE不允许挂机，如果检测到挂机时长超过30分钟，服务器资源会自动释放。挂机检测以是否敲击代码为准;

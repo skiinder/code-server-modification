@@ -26,10 +26,12 @@ RUN set -ex && \
     sudo mv /opt/jdk8u352-b08 /opt/java && \
     curl -L https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz | sudo tar -zxC /opt --no-same-owner && \
     sudo mv /opt/apache-maven-3.6.3 /opt/maven && \
+    sudo bash -c 'echo "export JAVA_HOME=/opt/java" >> /etc/environment' && \
+    sudo bash -c 'echo "export M2_HOME=/opt/maven" >> /etc/environment' && \
+    sudo bash -c 'echo "export PATH=\$PATH:/opt/java/bin:/opt/maven/bin" >> /etc/environment' && \
     sudo sed -i '/<mirrors>/a<mirror><id>nexus-aliyun</id><mirrorOf>central</mirrorOf><name>Nexus aliyun</name><url>http://maven.aliyun.com/nexus/content/groups/public</url></mirror>' /opt/maven/conf/settings.xml
 
 ENV JAVA_HOME=/opt/java M2_HOME=/opt/maven
-ENV PATH=$PATH:$JAVA_HOME/bin:$M2_HOME/bin
 
 # 获取Maven缓存
 COPY --from=m2 --chown=coder:coder /root/.m2 ./.m2
