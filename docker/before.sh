@@ -9,6 +9,7 @@ EOF
 cat <<EOF >/home/coder/.local/share/code-server/User/settings.json
 {
   "java.home": "/opt/java",
+  "java.compile.nullAnalysis.mode": "automatic",
   "maven.terminal.useJavaHome": true,
   "maven.executable.path": "/opt/maven/bin/mvn",
   "java.server.launchMode": "Standard",
